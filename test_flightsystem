@@ -1,0 +1,34 @@
+from project import Passenger, Plane
+
+
+def setup_function():
+    Passenger.passengers.clear()
+    Plane.planes.clear()
+    Plane.planenames.clear()
+
+
+def test_passenger_creation():
+    p = Passenger("Alice")
+    assert p.name == "Alice"
+    assert p.id is None
+
+
+def test_booking_success():
+    plane = Plane("TestAir", 3)
+    p = Passenger("Bob")
+
+    p.book(plane, 1)
+
+    assert p.id == 1
+    assert 1 not in plane.seats
+
+
+def test_cancel_booking():
+    plane = Plane("TestAir", 3)
+    p = Passenger("Charlie")
+
+    p.book(plane, 2)
+    p.cancel(plane, 2)
+
+    assert p.id is None
+    assert 2 in plane.seats
